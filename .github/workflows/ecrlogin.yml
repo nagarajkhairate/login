@@ -1,0 +1,19 @@
+name: ECR Login
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ecr-login:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # Other steps like building and pushing to ECR can go here
