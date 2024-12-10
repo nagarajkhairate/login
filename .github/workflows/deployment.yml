@@ -1,17 +1,16 @@
-name: Production Deployment
+name: Deployment Workflow
 
 on:
   push:
     branches:
-      - main  # Trigger the workflow when pushing to the main branch
+      - main  # Trigger workflow when pushing to the main branch
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment: production  # Ensure this matches your environment where secrets are set
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up AWS CLI
@@ -20,7 +19,20 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set region ap-south-1
 
-      - name: Deploy to AWS
+      - name: Deploy to Testing (Manual Approval Required)
+        environment: testing  # This triggers the manual approval in the 'testing' environment
         run: |
-          echo "Deploying to AWS..."
-          # Actual AWS CLI commands or deployment actions here
+          echo "Deploying to Testing Environment"
+          # Actual testing deployment commands here
+
+      - name: Deploy to Staging (Manual Approval Required)
+        environment: staging  # This triggers the manual approval in the 'staging' environment
+        run: |
+          echo "Deploying to Staging Environment"
+          # Actual staging deployment commands here
+
+      - name: Deploy to Production (Manual Approval Required)
+        environment: production  # This triggers the manual approval in the 'production' environment
+        run: |
+          echo "Deploying to Production Environment"
+          # Actual production deployment commands here
