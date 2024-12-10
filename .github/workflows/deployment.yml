@@ -1,33 +1,26 @@
-name: Deployment Workflow
+name: Production Deployment
 
 on:
   push:
     branches:
-      - main  # Trigger the workflow on push to the main branch
+      - main  # Trigger the workflow when pushing to the main branch
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-
-    environment: testing  # Referencing the environment for approval (can be "testing", "production", etc.)
+    environment: production  # Ensure this matches your environment where secrets are set
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v2
-
-      - name: Set environment variables
-        run: |
-          echo "Environment Name: ${{ env.ENVIRONMENT_NAME }}"
-          echo "Deployment Region: ${{ env.DEPLOYMENT_REGION }}"
 
       - name: Set up AWS CLI
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws configure set region ${{ env.DEPLOYMENT_REGION }}
+          aws configure set region ap-south-1
 
       - name: Deploy to AWS
         run: |
           echo "Deploying to AWS..."
-          # Add your actual deployment commands here
-
+          # Actual AWS CLI commands or deployment actions here
