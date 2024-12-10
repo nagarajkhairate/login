@@ -13,9 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Configure AWS credentials and region
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1  # Set your region here
+
+      # Log in to Amazon ECR
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
-        with:
-          region: ap-south-1  # Specify your region here
 
-      # Additional steps can go here, like building and pushing to ECR
+      # Additional steps like building and pushing to ECR can go here
