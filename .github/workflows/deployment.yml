@@ -19,20 +19,38 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set region ap-south-1
 
-      - name: Deploy to Testing (Manual Approval Required)
-        environment: testing  # This triggers the manual approval in the 'testing' environment
+  # Job 1: Deploy to Testing
+  deploy-testing:
+    runs-on: ubuntu-latest
+    environment: testing  # Target 'testing' environment (requires manual approval)
+    needs: build  # Ensures this job runs after the build job
+
+    steps:
+      - name: Deploy to Testing Environment
         run: |
           echo "Deploying to Testing Environment"
-          # Actual testing deployment commands here
+          # Add your deployment commands for testing here
 
-      - name: Deploy to Staging (Manual Approval Required)
-        environment: staging  # This triggers the manual approval in the 'staging' environment
+  # Job 2: Deploy to Staging
+  deploy-staging:
+    runs-on: ubuntu-latest
+    environment: staging  # Target 'staging' environment (requires manual approval)
+    needs: deploy-testing  # Ensures this job runs after testing
+
+    steps:
+      - name: Deploy to Staging Environment
         run: |
           echo "Deploying to Staging Environment"
-          # Actual staging deployment commands here
+          # Add your deployment commands for staging here
 
-      - name: Deploy to Production (Manual Approval Required)
-        environment: production  # This triggers the manual approval in the 'production' environment
+  # Job 3: Deploy to Production
+  deploy-production:
+    runs-on: ubuntu-latest
+    environment: production  # Target 'production' environment (requires manual approval)
+    needs: deploy-staging  # Ensures this job runs after staging
+
+    steps:
+      - name: Deploy to Production Environment
         run: |
           echo "Deploying to Production Environment"
-          # Actual production deployment commands here
+          # Add your deployment commands for production here
